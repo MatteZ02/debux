@@ -3,7 +3,7 @@ import Debux from "..";
 
 const debug = new Debux({ maxCacheSize: 10, logLevel: 4 });
 
-debug.log("this is a log", {
+debug.log(null, {
     process: "process",
     class: "className",
     function: "function",

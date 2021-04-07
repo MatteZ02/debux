@@ -7,7 +7,7 @@ declare module "debux" {
         private maxCacheSize: number;
         private cache: string[];
         private logLevel: number;
-        public log(s: string, options?: Options): void;
+        public log(s: string | null, options?: Options): void;
         public error(s: string, options?: Options): void;
         public warn(s: string, options?: Options): void;
         public info(s: string, options?: Options): void;

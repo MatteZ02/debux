@@ -36,8 +36,8 @@ module.exports = class Debux {
         this.cache = [];
         this.logLevel = options?.logLevel ?? defaultOptions.logLevel;
     }
-    public log(s: string, options?: Options): void {
-        this.addCache(s);
+    public log(s: string | null, options?: Options): void {
+        this.addCache(s ?? "null");
         if (this.logLevel == level.all) return Debux.consoleLog(this.constructMessage(s, options));
     }
 
@@ -67,14 +67,14 @@ module.exports = class Debux {
         console.log(s);
     }
 
-    private constructMessage(s: string, options?: Options): string {
+    private constructMessage(s: string | null, options?: Options): string {
         let msg: string = chalk.cyan(new Date().toUTCString()) + seperator;
         if (typeof options?.process == "string") msg += chalk.magenta(options.process) + seperator;
         if (typeof options?.class == "string") msg += chalk.yellow(options.class) + seperator;
         if (typeof options?.event == "string") msg += chalk.green(options.event) + seperator;
         if (typeof options?.function == "string") msg += chalk.blue(options.function) + seperator;
-
-        return msg + s;
+        if (!s) return msg.slice(0, msg.length - 3);
+        else return msg + s;
     }
 
     private addCache(log: string): void {
