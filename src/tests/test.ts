@@ -1,6 +1,7 @@
-import Debux, { level } from "..";
+//@ts-ignore
+import Debux from "..";
 
-const debug = new Debux({ maxCacheSize: 10, logLevel: level.all });
+const debug = new Debux({ maxCacheSize: 10, logLevel: 4 });
 
 debug.log("this is a log", {
     process: "process",

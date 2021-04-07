@@ -27,7 +27,7 @@ const defaultOptions = {
     logLevel: level.all
 };
 
-class Debux {
+module.exports = class Debux {
     private maxCacheSize: number;
     private cache: string[];
     private logLevel: number;
@@ -81,6 +81,4 @@ class Debux {
         this.cache.push(new Date().toUTCString() + seperator + log);
         if (this.cache.length > this.maxCacheSize) this.cache.shift();
     }
-}
-
-export default Debux;
+};
