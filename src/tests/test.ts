@@ -1,7 +1,7 @@
 //@ts-ignore
-import Debux from "..";
+import debux from "..";
 
-const debug = new Debux({ maxCacheSize: 10, logLevel: 4 });
+const debug = debux({ maxCacheSize: 10, logLevel: 4 });
 
 debug.log(null, {
     process: "process",
@@ -32,3 +32,5 @@ debug.info("this is info", {
 });
 
 console.log(debug.logs);
+
+console.log(debux());

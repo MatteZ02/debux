@@ -11,9 +11,9 @@ You can contact us on our [Discord server](https://discord.gg/2qFkF3qqmu)
 # Usage
 
 ```js
-const Debux = require("debux");
+const debux = require("debux");
 
-const debug = new Debux();
+const debug = debux();
 
 debug.log("This is a log");
 ```

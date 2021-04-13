@@ -27,7 +27,13 @@ const defaultOptions = {
     logLevel: level.all
 };
 
-module.exports = class Debux {
+let existing: null | Debux = null;
+
+module.exports = function(options?: constructOptions): Debux {
+    return existing ? existing : (existing = new Debux(options));
+};
+
+export class Debux {
     private maxCacheSize: number;
     private cache: string[];
     private logLevel: number;
@@ -81,4 +87,4 @@ module.exports = class Debux {
         this.cache.push(new Date().toUTCString() + seperator + log);
         if (this.cache.length > this.maxCacheSize) this.cache.shift();
     }
-};
+}
