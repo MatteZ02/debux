@@ -8,6 +8,8 @@ export enum level {
     all = 4
 }
 
+type cmd = "log" | "error" | "warn" | "info";
+
 export interface Options {
     process?: string;
     class?: string;
@@ -30,7 +32,7 @@ const defaultOptions = {
 let existing: null | Debux = null;
 
 module.exports = function(options?: constructOptions): Debux {
-    return existing ? existing : (existing = new Debux(options));
+    return existing || (existing = new Debux(options));
 };
 
 export class Debux {
@@ -44,25 +46,26 @@ export class Debux {
     }
     public log(s: string | null, options?: Options): void {
         this.addCache(s ?? "null");
-        if (this.logLevel == level.all) return Debux.consoleLog(this.constructMessage(s, options));
+        if (this.logLevel == level.all)
+            return Debux.consoleLog(this.constructMessage(s, "log", options));
     }
 
     public error(s: string, options?: Options): void {
         this.addCache(s);
         if (this.logLevel > level.error)
-            return Debux.consoleLog(this.constructMessage(chalk.red(s), options));
+            return Debux.consoleLog(this.constructMessage(chalk.red(s), "error", options));
     }
 
     public warn(s: string, options?: Options): void {
         this.addCache(s);
         if (this.logLevel > level.warning)
-            return Debux.consoleLog(this.constructMessage(chalk.yellow(s), options));
+            return Debux.consoleLog(this.constructMessage(chalk.yellow(s), "warn", options));
     }
 
     public info(s: string, options?: Options): void {
         this.addCache(s);
         if (this.logLevel > level.info)
-            return Debux.consoleLog(this.constructMessage(chalk.blue(s), options));
+            return Debux.consoleLog(this.constructMessage(s, "info", options));
     }
 
     public get logs(): string[] {
@@ -73,14 +76,34 @@ export class Debux {
         console.log(s);
     }
 
-    private constructMessage(s: string | null, options?: Options): string {
-        let msg: string = chalk.cyan(new Date().toUTCString()) + seperator;
+    private constructMessage(s: string | null, cmd: cmd, options?: Options): string {
+        let msg: string =
+            chalk.black(chalk.bgCyan(new Date().toUTCString())) +
+            seperator +
+            this.getCMDString(cmd);
         if (typeof options?.process == "string") msg += chalk.magenta(options.process) + seperator;
         if (typeof options?.class == "string") msg += chalk.yellow(options.class) + seperator;
         if (typeof options?.event == "string") msg += chalk.green(options.event) + seperator;
         if (typeof options?.function == "string") msg += chalk.blue(options.function) + seperator;
         if (!s) return msg.slice(0, msg.length - 3);
         else return msg + s;
+    }
+
+    private getCMDString(cmd: cmd): string {
+        switch (cmd) {
+            case "log":
+                return "";
+
+            case "info":
+                return chalk.black(chalk.bgBlue("Info")) + seperator;
+
+            case "warn":
+                return chalk.black(chalk.bgYellow("Warning")) + seperator;
+            case "error":
+                return chalk.black(chalk.bgRed("Error")) + seperator;
+            default:
+                return "";
+        }
     }
 
     private addCache(log: string): void {
