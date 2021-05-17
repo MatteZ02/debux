@@ -78,9 +78,7 @@ export class Debux {
 
     private constructMessage(s: string | null, cmd: cmd, options?: Options): string {
         let msg: string =
-            chalk.black(chalk.bgCyan(new Date().toUTCString())) +
-            seperator +
-            this.getCMDString(cmd);
+            chalk.cyan(new Date().toUTCString()) + seperator + this.getCMDString(cmd);
         if (typeof options?.process == "string") msg += chalk.magenta(options.process) + seperator;
         if (typeof options?.class == "string") msg += chalk.yellow(options.class) + seperator;
         if (typeof options?.event == "string") msg += chalk.green(options.event) + seperator;
@@ -91,12 +89,8 @@ export class Debux {
 
     private getCMDString(cmd: cmd): string {
         switch (cmd) {
-            case "log":
-                return "";
-
             case "info":
                 return chalk.black(chalk.bgBlue("Info")) + seperator;
-
             case "warn":
                 return chalk.black(chalk.bgYellow("Warning")) + seperator;
             case "error":
