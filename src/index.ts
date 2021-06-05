@@ -52,19 +52,19 @@ export class Debux {
 
     public error(s: string, options?: Options): void {
         this.addCache(s);
-        if (this.logLevel > level.error)
+        if (this.logLevel >= level.error)
             return Debux.consoleLog(this.constructMessage(chalk.red(s), "error", options));
     }
 
     public warn(s: string, options?: Options): void {
         this.addCache(s);
-        if (this.logLevel > level.warning)
+        if (this.logLevel >= level.warning)
             return Debux.consoleLog(this.constructMessage(chalk.yellow(s), "warn", options));
     }
 
     public info(s: string, options?: Options): void {
         this.addCache(s);
-        if (this.logLevel > level.info)
+        if (this.logLevel >= level.info)
             return Debux.consoleLog(this.constructMessage(s, "info", options));
     }
 
