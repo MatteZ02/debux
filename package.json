@@ -1,6 +1,6 @@
 {
     "name": "debux",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "description": "Easy-to-use library for debugging your code",
     "main": "build/index.js",
     "types": "./typings/index.d.ts",
