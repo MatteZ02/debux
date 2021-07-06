@@ -89,7 +89,7 @@ export class Debux {
 
     private constructEntry(s: string | null, cmd: cmd, options?: Options): string {
         let msg: string =
-            new Date().toUTCString() + seperator + this.getCMDString(cmd);
+            new Date().toUTCString() + seperator + cmd + seperator;
         if (typeof options?.process == "string") msg += options.process + seperator;
         if (typeof options?.class == "string") msg += options.class + seperator;
         if (typeof options?.event == "string") msg += options.event + seperator;
@@ -112,7 +112,7 @@ export class Debux {
     }
 
     private addCache(log: string): void {
-        this.cache.push(new Date().toUTCString() + seperator + log);
+        this.cache.push(log);
         if (this.cache.length > this.maxCacheSize) this.cache.shift();
     }
 }
