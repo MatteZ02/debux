@@ -1,7 +1,7 @@
 //@ts-ignore
 import debux from "..";
 
-const debug = debux({ maxCacheSize: 10, logLevel: 3 });
+const debug = debux({ maxCacheSize: 10, logLevel: 4 });
 
 debug.log("this is a log", {
     process: "process",
