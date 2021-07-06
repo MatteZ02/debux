@@ -4,6 +4,8 @@ Easy-to-use library for debugging your code
 
 NOTE! This library is still in development and may not work as expected!
 
+![image](https://user-images.githubusercontent.com/51192395/124608268-411fa700-de77-11eb-9b98-d27ef98dd953.png)
+
 # Support
 
 You can contact us on our [Discord server](https://discord.gg/2qFkF3qqmu)
