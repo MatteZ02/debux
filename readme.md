@@ -12,7 +12,7 @@ You can contact us on our [Discord server](https://discord.gg/2qFkF3qqmu)
 
 # Usage
 
-calling `debux()` will always return the same instance on debux that was initialize within the same process!
+calling `debux()` will always return the same instance on debux that was initialized within the same process!
 
 ```js
 const debux = require("debux");
