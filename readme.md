@@ -67,11 +67,11 @@ De
 ### log
 `debux.log(string | null, Options?)` logs a simple informative log
 ### error
-`debux.error(string, Options?)`logs information about code
+`debux.error(string, Options?)` logs information about code
 ### warn
-`debux.warn(string, Options?)`logs a warning
+`debux.warn(string, Options?)` logs a warning
 ### info
-`debux.info(string, Options?)`logs an error
+`debux.info(string, Options?)` logs an error
 
 ```ts
 interface Options {
