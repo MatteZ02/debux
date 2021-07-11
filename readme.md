@@ -86,6 +86,7 @@ interface Options {
 interface constructOptions {
     maxCacheSize?: number;// how many logs to cache at a time
     logLevel?: level;// which logs should be logged into console directly
+    includeMilliseconds?: boolean;// whether to include milliseconds in the date string
 }
 
 export enum level {

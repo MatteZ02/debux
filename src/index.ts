@@ -20,6 +20,7 @@ export interface Options {
 export interface constructOptions {
     maxCacheSize?: number;
     logLevel?: level;
+    includeMilliseconds?: boolean;
 }
 
 const seperator = " | ";
@@ -39,10 +40,12 @@ export class Debux {
     private maxCacheSize: number;
     private cache: string[];
     private logLevel: number;
+    private includeMilliseconds: boolean;
     constructor(options?: constructOptions) {
         this.maxCacheSize = options?.maxCacheSize ?? defaultOptions.maxCacheSize;
         this.cache = [];
         this.logLevel = options?.logLevel ?? defaultOptions.logLevel;
+        this.includeMilliseconds = options?.includeMilliseconds ?? false;
     }
     public log(s: string | null, options?: Options): void {
         this.addCache(this.constructEntry(s, "log", options));
@@ -78,7 +81,7 @@ export class Debux {
 
     private constructMessage(s: string | null, cmd: cmd, options?: Options): string {
         let msg: string =
-            chalk.cyan(new Date().toUTCString()) + seperator + this.getCMDString(cmd);
+            chalk.cyan(this.getDate()) + seperator + this.getCMDString(cmd);
         if (typeof options?.process == "string") msg += chalk.magenta(options.process) + seperator;
         if (typeof options?.class == "string") msg += chalk.yellow(options.class) + seperator;
         if (typeof options?.event == "string") msg += chalk.green(options.event) + seperator;
@@ -89,7 +92,7 @@ export class Debux {
 
     private constructEntry(s: string | null, cmd: cmd, options?: Options): string {
         let msg: string =
-            new Date().toUTCString() + seperator + cmd + seperator;
+            this.getDate() + seperator + cmd + seperator;
         if (typeof options?.process == "string") msg += options.process + seperator;
         if (typeof options?.class == "string") msg += options.class + seperator;
         if (typeof options?.event == "string") msg += options.event + seperator;
@@ -109,6 +112,10 @@ export class Debux {
             default:
                 return "";
         }
+    }
+
+    private getDate(): string {
+        return this.includeMilliseconds ? new Date().toUTCString().replace(" GMT", `.${new Date().getMilliseconds()} GMT`) : new Date().toUTCString();
     }
 
     private addCache(log: string): void {
