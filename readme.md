@@ -99,4 +99,4 @@ export enum level {
 ```
 
 
-Copyright (c) 2021 MatteZ02
+Copyright (c) 2022 MatteZ02
