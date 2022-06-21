@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import { PathLike, writeFileSync } from "fs";
 
 export enum level {
     nothing = 0,
@@ -17,10 +18,11 @@ export interface Options {
     event?: string;
 }
 
-export interface constructOptions {
+export interface ConstructOptions {
     maxCacheSize?: number;
     logLevel?: level;
     includeMilliseconds?: boolean;
+    logFile?: PathLike;
 }
 
 const seperator = " | ";
@@ -32,20 +34,19 @@ const defaultOptions = {
 
 let existing: null | Debux = null;
 
-module.exports = function(options?: constructOptions): Debux {
-    return existing || (existing = new Debux(options));
-};
-
 export class Debux {
     private maxCacheSize: number;
     private cache: string[];
     private logLevel: number;
     private includeMilliseconds: boolean;
-    constructor(options?: constructOptions) {
+    private logFile: PathLike | undefined;
+    constructor(options?: ConstructOptions) {
         this.maxCacheSize = options?.maxCacheSize ?? defaultOptions.maxCacheSize;
         this.cache = [];
         this.logLevel = options?.logLevel ?? defaultOptions.logLevel;
         this.includeMilliseconds = options?.includeMilliseconds ?? false;
+        this.logFile = options?.logFile;
+        if (this.logFile) writeFileSync(this.logFile, "debux logs\n");
     }
     public log(s: string | null, options?: Options): void {
         this.addCache(this.constructEntry(s, "log", options));
@@ -80,8 +81,7 @@ export class Debux {
     }
 
     private constructMessage(s: string | null, cmd: cmd, options?: Options): string {
-        let msg: string =
-            chalk.cyan(this.getDate()) + seperator + this.getCMDString(cmd);
+        let msg: string = chalk.cyan(this.getDate()) + seperator + this.getCMDString(cmd);
         if (typeof options?.process == "string") msg += chalk.magenta(options.process) + seperator;
         if (typeof options?.class == "string") msg += chalk.yellow(options.class) + seperator;
         if (typeof options?.event == "string") msg += chalk.green(options.event) + seperator;
@@ -91,8 +91,7 @@ export class Debux {
     }
 
     private constructEntry(s: string | null, cmd: cmd, options?: Options): string {
-        let msg: string =
-            this.getDate() + seperator + cmd + seperator;
+        let msg: string = this.getDate() + seperator + cmd + seperator;
         if (typeof options?.process == "string") msg += options.process + seperator;
         if (typeof options?.class == "string") msg += options.class + seperator;
         if (typeof options?.event == "string") msg += options.event + seperator;
@@ -119,7 +118,18 @@ export class Debux {
     }
 
     private addCache(log: string): void {
+        this.writeFile(log + "\n");
         this.cache.push(log);
         if (this.cache.length > this.maxCacheSize) this.cache.shift();
     }
+
+    private writeFile(log: string): void {
+        if (this.logFile) {
+            writeFileSync(this.logFile, log, { flag: "a+" });
+        }
+    }
 }
+
+module.exports = function (options?: ConstructOptions): Debux {
+    return existing || (existing = new Debux(options));
+};
